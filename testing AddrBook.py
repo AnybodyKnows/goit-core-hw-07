@@ -1,14 +1,35 @@
 from AddrBook import * 
 
 
+book = AddressBook()
+
 
 john_record = Record("John")
 john_record.add_phone("1234567890")
 john_record.add_phone("5555555555")
-john_record.add_birthday("15.01.2023")
+john_record.add_birthday("27.02.1978")
 
-print(john_record)
+sam_record = Record("Sam")
+sam_record.add_phone("1111111111")
+sam_record.add_phone("4444444444")
+sam_record.add_birthday("29.02.1988")
 
+Bon_record = Record("Bon")
+Bon_record.add_phone("1111111119")
+Bon_record.add_phone("4444444448")
+Bon_record.add_birthday("02.03.1988")
+
+book.add_record(john_record)
+book.add_record(sam_record)
+book.add_record(Bon_record)
+
+# zz = {k: v.birthday.value for k, v in book.items() \
+#       if v.birthday is not None }
+
+bd = book.get_birthdays(7)
+
+print (book)
+print (bd) 
 
 
 

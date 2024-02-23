@@ -1,6 +1,7 @@
 from collections import UserDict
 import re
-from datetime import datetime as dt
+from datetime import datetime as dtdt
+import datetime as dt
 
 
 class Field:
@@ -42,7 +43,7 @@ class Phone(Field):
 class Birthday(Field):
     def __init__(self, value: str) -> None:
         try:
-            b_date = dt.strptime(value,"%d.%m.%Y").date()
+            b_date = dtdt.strptime(value,"%d.%m.%Y").date()
             super().__init__(b_date)
         except:
             raise ValueError ("please input date in correct format \
@@ -107,3 +108,24 @@ class AddressBook(UserDict):
             del self[key]
         else: 
             raise KeyError
+    
+            
+
+    def get_birthdays (self, for_the_period:7):
+        congrat_list = [] 
+        bd_dict = {k: v.birthday.value for k, v in self.items() \
+      if v.birthday is not None }
+        curr_date = dtdt.today().date()
+        end_date = curr_date + dt.timedelta(for_the_period)
+        for k, v in bd_dict.items():
+            bd_date = v
+            bd_date_this_year = dt.date(curr_date.year,bd_date.month,bd_date.day)
+            if bd_date_this_year.weekday()==6:
+                bd_date_this_year = bd_date_this_year + dt.timedelta(1)
+            if bd_date_this_year.weekday()==5:
+                bd_date_this_year = bd_date_this_year + dt.timedelta(2)
+            
+            if (bd_date_this_year <= end_date) and (bd_date_this_year >= curr_date):
+                dct = {"name": k, "congratulation_date": bd_date_this_year.strftime("%Y.%m.%d")}
+                congrat_list.append (dct)
+        return congrat_list
