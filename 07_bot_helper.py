@@ -1,4 +1,6 @@
 
+from AddrBook import * 
+
 def input_error(func):
     def inner(*args, **kwargs):
         try:
@@ -13,7 +15,8 @@ def input_error(func):
             return f"Error: {e}"
     return inner
 
-contucts_book = dict()
+book = AddressBook()
+contucts_book = []
 
 
 def parse_input(user_input):
@@ -23,11 +26,15 @@ def parse_input(user_input):
 
 @input_error
 def add_contact(command, *args):
-    if args[0] in contucts_book:
-        return f"{args[0]} already in list"
+    if args[0] in book:
+        return f"{args[0]} has been added already"
     else:
-        contucts_book[args[0]] = args[1] 
-        return ("added")
+        record = Record(args[0])
+        record.add_phone(args[1])
+        book.add_record(record)
+        print(book)
+
+
 
 @input_error
 def change_contact(command, *args):
@@ -56,8 +63,11 @@ def main():
         elif command in ["hello"]:
             print("Hello how can I help you?")
         elif command in ["add"]:
-            result = add_contact(command, *args)
-            print(result)
+            record = Record(args[0])
+            record.add_phone(args[1])
+            book.add_record(record)
+            print(book)
+            
         elif command in ["change"]:
             result = change_contact(command, *args)
             print(result)
@@ -67,6 +77,15 @@ def main():
         elif command in ["all"]:
             result = show_all(command, *args)
             print(result)
+        elif command == "add-birthday":
+            pass
+        
+        elif command == "show-birthday":
+            pass
+        
+        elif command == "birthdays":
+            pass
+        
         else:
             print("Invalid comand")              
                 

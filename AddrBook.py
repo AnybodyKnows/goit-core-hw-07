@@ -94,7 +94,7 @@ class Record:
     
 class AddressBook(UserDict):
 
-    def add_record(self, record_item):
+    def add_record(self, record_item: "Record"):
         self.data[record_item.name.value] = record_item
     
     def find(self, key):
