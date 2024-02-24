@@ -24,7 +24,7 @@ def parse_input(user_input):
     cmd = cmd.strip().lower()
     return cmd, *args  
 
-@input_error
+# @input_error
 def add_contact(command, *args):
     if args[0] in book:
         return f"{args[0]} has been added already"
@@ -35,22 +35,35 @@ def add_contact(command, *args):
         print(book)
 
 
-
-@input_error
+# @input_error
 def change_contact(command, *args):
-    if args[0] in contucts_book:
-        contucts_book[args[0]] = args[1]
-        return ("Contact updated.")
-    else: return "No such contuct"
+    record = Record(args[0])
+    record.add_phone(args[1])
+    book.delete(args[0])
+    book.add_record(record)
+    print(book)
 
-@input_error
+# @input_error
 def show_phone(command, *args):
-    return contucts_book[args[0]]
+    print(book[args[0]])
 
-@input_error
+
+# @input_error
 def show_all(command, *args):
-    return contucts_book
+    for record in book.data.items():
+        print(f"{record}")
 
+# @input_error
+def show_birthday(*args):
+    record = book[args[0]]
+    return str(record.birthday.value)
+
+def add_birthday(*args):
+    record = book[args[0]]
+    book.delete(args[0])
+    record.add_birthday(args[1])
+    book.add_record(record)
+    print(book) 
 
 def main():
     print("Welcome to the assistant bot!")
@@ -63,32 +76,49 @@ def main():
         elif command in ["hello"]:
             print("Hello how can I help you?")
         elif command in ["add"]:
-            record = Record(args[0])
-            record.add_phone(args[1])
-            book.add_record(record)
-            print(book)
-            
+            add_contact(command, *args)
         elif command in ["change"]:
             result = change_contact(command, *args)
-            print(result)
+            
         elif command in ["phone"]:
             result = show_phone(command, *args)
             print(result)
         elif command in ["all"]:
-            result = show_all(command, *args)
-            print(result)
+            show_all(command, *args)
+            
         elif command == "add-birthday":
-            pass
+            add_birthday(*args)
         
         elif command == "show-birthday":
-            pass
+            b_day = show_birthday(*args)
+            if b_day is None:
+                pass
+            else:
+                print(b_day)
         
         elif command == "birthdays":
-            pass
+            congrat_list = book.get_birthdays(7)
+            print(congrat_list)
         
         else:
             print("Invalid comand")              
                 
         
 if __name__ == "__main__":
-    main()
+     main()
+
+
+
+#     test_cmd = """
+# add jon 1234567890
+# add bob 5555555555
+# add sonia 9876543210
+# change jon 2222222222
+# phone jon
+# add-birthday jon 23.04.2000
+# add-birthday sonia 28.02.2000
+# show-birthday jon
+# birthdays"""
+#     a = test_cmd.split("\n")
+#     print (a)
+

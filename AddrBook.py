@@ -87,9 +87,17 @@ class Record:
 
    
     def __str__(self) -> str:
+        try:
+            phones = [obj.value for obj in self.phones]
+        except:
+            phones = ""
+        try:
+            birthday = str(self.birthday.value)
+        except:
+            birthday = ""
         return (f"Contact name:{self.name.value} \
-                phones:{[obj.value for obj in self.phones]} \
-                birthday: {str(self.birthday.value)}")    
+phones:{str(phones)} \
+birthday: {str(birthday)}")    
 
     
 class AddressBook(UserDict):
@@ -108,9 +116,7 @@ class AddressBook(UserDict):
             del self[key]
         else: 
             raise KeyError
-    
-            
-
+ 
     def get_birthdays (self, for_the_period:7):
         congrat_list = [] 
         bd_dict = {k: v.birthday.value for k, v in self.items() \
@@ -129,3 +135,22 @@ class AddressBook(UserDict):
                 dct = {"name": k, "congratulation_date": bd_date_this_year.strftime("%Y.%m.%d")}
                 congrat_list.append (dct)
         return congrat_list
+    
+    def __str__(self) -> str:
+        dict = {}
+        for k, v in self.items():
+            try:
+                phones = [obj.value for obj in v.phones]
+            except:
+                phones = ""
+            try:
+                birthday = str(v.birthday.value)
+            except:
+                birthday = ""
+            record_as_str = (f"Contact name:{v.name.value} \
+phones:{str(phones)} \
+birthday: {str(birthday)}")
+            dict[k] = record_as_str
+        
+        return str(dict)
+
