@@ -24,46 +24,50 @@ def parse_input(user_input):
     cmd = cmd.strip().lower()
     return cmd, *args  
 
-# @input_error
+@input_error
 def add_contact(command, *args):
     if args[0] in book:
-        return f"{args[0]} has been added already"
+        print(f"{args[0]} has been added already")
     else:
         record = Record(args[0])
         record.add_phone(args[1])
         book.add_record(record)
-        print(book)
+        # print(book)
 
 
-# @input_error
+@input_error
 def change_contact(command, *args):
-    record = Record(args[0])
-    record.add_phone(args[1])
-    book.delete(args[0])
-    book.add_record(record)
-    print(book)
+    rec = Record
+    rec = book[args[0]]
+    try:
+        old_phone =  rec.phones[0].value
+    except:
+        old_phone = []
+    rec.edit_phone(old_phone, args[1])
+    # print(book)
 
-# @input_error
+@input_error
 def show_phone(command, *args):
     print(book[args[0]])
 
 
-# @input_error
+@input_error
 def show_all(command, *args):
-    for record in book.data.items():
-        print(f"{record}")
+    print(book)
 
-# @input_error
+@input_error
 def show_birthday(*args):
     record = book[args[0]]
     return str(record.birthday.value)
 
 def add_birthday(*args):
-    record = book[args[0]]
-    book.delete(args[0])
-    record.add_birthday(args[1])
-    book.add_record(record)
-    print(book) 
+    try:
+        rec = Record
+        rec = book[args[0]]
+        rec.add_birthday(args[1])
+    except:
+        print ("add contuct first using commmand add name phone"  )
+    
 
 def main():
     print("Welcome to the assistant bot!")
@@ -113,7 +117,7 @@ if __name__ == "__main__":
 # add jon 1234567890
 # add bob 5555555555
 # add sonia 9876543210
-# change jon 2222222222
+# change jon 2222222228
 # phone jon
 # add-birthday jon 23.04.2000
 # add-birthday sonia 28.02.2000
