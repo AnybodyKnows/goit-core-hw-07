@@ -11,6 +11,8 @@ def input_error(func):
             return "Command not Found."
         except KeyError:
             return "Name not Found."
+        except NameError:
+            return "Name not Found."
         except Exception as e:
             return f"Error: {e}"
     return inner
@@ -32,43 +34,37 @@ def add_contact(command, *args):
         record = Record(args[0])
         record.add_phone(args[1])
         book.add_record(record)
-        # print(book)
+
 
 
 @input_error
 def change_contact(command, *args):
-    rec = Record
-    rec = book[args[0]]
+    record = book.find(args[0])
     try:
-        old_phone =  rec.phones[0].value
+        old_phone =  record.phones[0].value
     except:
         old_phone = []
-    rec.edit_phone(old_phone, args[1])
-    # print(book)
+    record.edit_phone(old_phone, args[1])
 
 @input_error
-def show_phone(command, *args):
-    print(book[args[0]])
-
+def show_phone(*args):
+    record = book.find(args[0])
+    return record.phones
 
 @input_error
-def show_all(command, *args):
-    print(book)
+def show_all():
+    return book
 
 @input_error
 def show_birthday(*args):
-    record = book[args[0]]
-    return str(record.birthday.value)
+    record = book.find(args[0])
+    return record.birthday
 
+@input_error
 def add_birthday(*args):
-    try:
-        rec = Record
-        rec = book[args[0]]
-        rec.add_birthday(args[1])
-    except:
-        print ("add contuct first using commmand add name phone"  )
+    record = book.find(args[0])
+    record.add_birthday(args[1])
     
-
 def main():
     print("Welcome to the assistant bot!")
     while True:
@@ -82,23 +78,23 @@ def main():
         elif command in ["add"]:
             add_contact(command, *args)
         elif command in ["change"]:
-            result = change_contact(command, *args)
+            change_contact(command, *args)
             
         elif command in ["phone"]:
-            result = show_phone(command, *args)
-            print(result)
+            for p in show_phone(*args):
+                print(p)
+        
         elif command in ["all"]:
-            show_all(command, *args)
+            all = show_all()
+            print (all)
             
         elif command == "add-birthday":
-            add_birthday(*args)
+            print(add_birthday(*args))
+            
         
         elif command == "show-birthday":
             b_day = show_birthday(*args)
-            if b_day is None:
-                pass
-            else:
-                print(b_day)
+            print(b_day)
         
         elif command == "birthdays":
             congrat_list = book.get_birthdays(7)

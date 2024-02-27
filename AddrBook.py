@@ -9,10 +9,7 @@ class Field:
         self.value = value
     
     def __str__(self):
-        try:
-            return self.value
-        except:
-            return str(self.value)
+        return str(self.value)
     
 class Name(Field):
     def __init__(self, value):
@@ -38,7 +35,10 @@ class Phone(Field):
         if isinstance(other, Phone):
             return self.value == other.value
         else:
-            return False  
+            return False
+    
+    def __str__(self):
+        return super().__str__()      
 
 class Birthday(Field):
     def __init__(self, value: str) -> None:
@@ -109,7 +109,7 @@ class AddressBook(UserDict):
         if key in self:
             return self[key]
         else: 
-            raise KeyError
+            return KeyError
 
     def delete(self, key):
         if key in self:
