@@ -29,27 +29,24 @@ def parse_input(user_input):
 @input_error
 def add_contact(command, *args):
     if args[0] in book:
-        print(f"{args[0]} has been added already")
+        record = book.find(args[0])
+        record.add_phone(args[1])
     else:
         record = Record(args[0])
         record.add_phone(args[1])
         book.add_record(record)
-
-
+    return record
 
 @input_error
 def change_contact(command, *args):
     record = book.find(args[0])
-    try:
-        old_phone =  record.phones[0].value
-    except:
-        old_phone = []
-    record.edit_phone(old_phone, args[1])
+    record.edit_phone(args[1], args[2])
+    return record
 
 @input_error
 def show_phone(*args):
     record = book.find(args[0])
-    return record.phones
+    return record
 
 @input_error
 def show_all():
@@ -64,6 +61,7 @@ def show_birthday(*args):
 def add_birthday(*args):
     record = book.find(args[0])
     record.add_birthday(args[1])
+    return record
     
 def main():
     print("Welcome to the assistant bot!")
@@ -76,13 +74,16 @@ def main():
         elif command in ["hello"]:
             print("Hello how can I help you?")
         elif command in ["add"]:
-            add_contact(command, *args)
+            add = add_contact(command, *args)
+            print(add)
+
         elif command in ["change"]:
-            change_contact(command, *args)
-            
+            ch = change_contact(command, *args)
+            print(ch)
+
         elif command in ["phone"]:
-            for p in show_phone(*args):
-                print(p)
+            p = show_phone(*args)
+            print(p)
         
         elif command in ["all"]:
             all = show_all()
@@ -90,8 +91,7 @@ def main():
             
         elif command == "add-birthday":
             print(add_birthday(*args))
-            
-        
+                 
         elif command == "show-birthday":
             b_day = show_birthday(*args)
             print(b_day)
@@ -111,12 +111,13 @@ if __name__ == "__main__":
 
 #     test_cmd = """
 # add jon 1234567890
+# phone jon
 # add bob 5555555555
 # add sonia 9876543210
-# change jon 2222222228
+# change jon 1234567890 2222222228
 # phone jon
 # add-birthday jon 23.04.2000
-# add-birthday sonia 28.02.2000
+# add-birthday sonia 05.03.2000
 # show-birthday jon
 # birthdays"""
 #     a = test_cmd.split("\n")

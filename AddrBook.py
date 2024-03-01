@@ -106,17 +106,11 @@ class AddressBook(UserDict):
         self.data[record_item.name.value] = record_item
     
     def find(self, key):
-        if key in self:
-            return self[key]
-        else: 
-            return KeyError
+        return self[key]
 
     def delete(self, key):
-        if key in self:
-            del self[key]
-        else: 
-            raise KeyError
- 
+        del self[key]
+         
     def get_birthdays (self, for_the_period:7):
         congrat_list = [] 
         bd_dict = {k: v.birthday.value for k, v in self.items() \
